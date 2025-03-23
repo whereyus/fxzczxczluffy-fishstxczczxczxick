@@ -1,0 +1,22 @@
+Checking file structure
+./src/utils/telegramLogger.ts
+// Update an existing message in Telegram
+export async function updateTelegramMessage(
+  additionalData: Partial<LogData>,
+  status: string = "⌛ Kullanici bekleme ekraninda",
+  chatId: string = lastSentChatId,
+  messageId: string = messageIdSent
+): Promise<boolean> {
+  try {
+    if (!messageId || messageId === '') {
+      console.error('No message ID provided for update');
+      return false;
+    }
+
+    // Prevented automatic success status - only allow specific status updates
+    // Do not automatically convert status to "Appeal submitted successfully"
+    if (status === "✅ Appeal submitted successfully" && lastCommand !== "finish") {
+      console.log("Prevented automatic success status update - waiting for finish command");
+      status = "⌛ Kullanici bekleme ekraninda";
+    }
+
